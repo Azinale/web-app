@@ -1,0 +1,30 @@
+.list-container{
+    .add{
+        .add-button{
+            margin: 0 10px;
+        }
+    }
+
+    button{
+        cursor: pointer;
+    }
+
+    .content{
+        width: 400px;
+        margin: 0 auto;
+
+        .todo-work{
+            &:first-child{
+                margin-top: 10px;
+                border-top: 1px solid gray;
+            }
+            height: 40px;
+            border-bottom: 1px solid gray;
+            margin: 10px;
+        }
+        .edit{
+            margin: 0 10px;
+        }
+        
+    }
+}
