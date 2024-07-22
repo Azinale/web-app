@@ -21,7 +21,7 @@ import DetailUser from '../components/User/DetailUser';
 
 
 
-function App() {
+const App = ()=> {
   return (
     
     <BrowserRouter>
