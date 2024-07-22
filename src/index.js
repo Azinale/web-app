@@ -1,23 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './views/App';
-import reportWebVitals from './reportWebVitals';
-import './styles/global.scss' 
-import { BrowserRouter } from 'react-router-dom';
-import { ApiProvider } from '@reduxjs/toolkit/query/react';
-import { Provider } from 'react-redux'
-import { createStore } from 'redux';
-import rootReducer from './store/reducer/rootReducer';
-const root = ReactDOM.createRoot(document.getElementById('root'));
-const reduxStore = createStore(rootReducer
- , window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-)
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./views/App";
+import reportWebVitals from "./reportWebVitals";
+import "./styles/global.scss";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import rootReducer from "./store/reducer/rootReducer";
+import "bootstrap/dist/css/bootstrap.min.css";
+const root = ReactDOM.createRoot(document.getElementById("root"));
+const reduxStore = createStore(
+  rootReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 root.render(
   <React.StrictMode>
     <Provider store={reduxStore}>
       <App />
-    </Provider>,
- 
+    </Provider>
   </React.StrictMode>
 );
 

@@ -1,11 +1,9 @@
-import logo from './logo.svg';
-import './App.scss';
+import logo from "./logo.svg";
+import "./App.scss";
 // import Myhello from '../components/Myhello';
-import MyForm from '../components/example1/MyForm';
-import ListToDo from '../components/todoapp/ListToDo';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Nav from '../components/common/Nav';
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import {
@@ -15,49 +13,39 @@ import {
   RouterProvider,
   Routes,
 } from "react-router-dom";
-import Home from '../components/common/Home';
-import ListUser from '../components/User/ListUser';
-import DetailUser from '../components/User/DetailUser';
+import Home from "../components/common/Home";
+import ListUser from "../components/User/ListUser";
+import DetailUser from "../components/User/DetailUser";
+import Header from "../components/common/Header";
 
-
-
-const App = ()=> {
+function App() {
   return (
-    
     <BrowserRouter>
       <div className="App">
-        <Nav />
-        
-        <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        {/* <Myhello></Myhello> */}
-        {/* <MyForm></MyForm> */}
-        <Routes>
-            <Route path="/home" element={<Home />} />
-            <Route path="/todo" element={<ListToDo />} />
-            <Route path='/user/:id' element={<DetailUser/>}/>
-            <Route path='/user' element={<ListUser/>}/>
-      </Routes>
-        </header>
+        <Header />
+        <div className="App-header">
+          {/* <img src={logo} className="App-logo" alt="logo" /> */}
+          <Routes>
+            <Route path="/" exact element={<Home />} />
+            <Route path="/user/:id" element={<DetailUser />} />
+            <Route path="/user" element={<ListUser />} />
+          </Routes>
+        </div>
+        <div className="main-nav">
+          <div className="side-nav"></div>
+          <div className="app-content"></div>
+        </div>
 
-        
-
-      <ToastContainer>
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        transition: Bounce
-      </ToastContainer>
-    </div>
+        <ToastContainer>
+          position="top-right" autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick rtl={false}
+          pauseOnFocusLoss draggable pauseOnHover theme="light" transition:
+          Bounce
+        </ToastContainer>
+      </div>
     </BrowserRouter>
-    
   );
 }
 
