@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Dropdown from "react-bootstrap/Dropdown";
+import "../../styles/global.scss";
 const Header = () => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -18,6 +19,8 @@ const Header = () => {
           >
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/user">User</Nav.Link>
+            <Nav.Link href="/Admin">Admin</Nav.Link>
+            <Nav.Link href="/course">Course</Nav.Link>
           </Nav>
 
           <Nav>

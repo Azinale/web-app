@@ -6,6 +6,7 @@ import { type } from "@testing-library/user-event/dist/type";
 import "../../styles/global.scss";
 import video from "/home/quy/Documents/testJS/my-app/src/assets/video/hero.webm";
 import Button from "react-bootstrap/Button";
+import { toast } from "react-toastify";
 
 const Home = (props) => {
   // console.log(props);
@@ -31,6 +32,7 @@ const Home = (props) => {
             you need to build a profitable business, all in one scalable
             platform.
           </div>
+
           <div className="home-text-btn">
             <Button variant="outline-success">Subcribe</Button>
           </div>

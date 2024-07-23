@@ -9,6 +9,7 @@ import * as ReactDOM from "react-dom/client";
 import {
   BrowserRouter,
   createBrowserRouter,
+  Outlet,
   Route,
   RouterProvider,
   Routes,
@@ -17,35 +18,36 @@ import Home from "../components/common/Home";
 import ListUser from "../components/User/ListUser";
 import DetailUser from "../components/User/DetailUser";
 import Header from "../components/common/Header";
+import Admin from "../components/Admin/Admin";
+import Coursemanage from "../components/Admin/Coursemanage";
+import DashBoard from "../components/Admin/content/DashBoard";
+import UserManage from "../components/Admin/content/UserManage";
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="App">
-        <Header />
-        <div className="App-header">
-          {/* <img src={logo} className="App-logo" alt="logo" /> */}
-          <Routes>
+    // <BrowserRouter>
+    <div className="App">
+      <Header />
+      <div className="App-header">
+        {/* <img src={logo} className="App-logo" alt="logo" /> */}
+        {/* <Routes>
             <Route path="/" exact element={<Home />} />
-            <Route path="/user/:id" element={<DetailUser />} />
-            <Route path="/user" element={<ListUser />} />
-          </Routes>
-        </div>
-        <div className="main-nav">
-          <div className="side-nav"></div>
-          <div className="app-content"></div>
-        </div>
-
-        <ToastContainer>
-          position="top-right" autoClose={2000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick rtl={false}
-          pauseOnFocusLoss draggable pauseOnHover theme="light" transition:
-          Bounce
-        </ToastContainer>
+          </Routes> */}
       </div>
-    </BrowserRouter>
+      <div className="main-nav">
+        <div className="side-nav"></div>
+        <div className="app-content"></div>
+      </div>
+      <Outlet />
+      <ToastContainer>
+        position="top-right" autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick rtl={false}
+        pauseOnFocusLoss draggable pauseOnHover theme="light" transition: Bounce
+      </ToastContainer>
+    </div>
+    // </BrowserRouter>
   );
 }
 
