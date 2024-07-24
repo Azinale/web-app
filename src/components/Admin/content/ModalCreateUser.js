@@ -8,7 +8,19 @@ const ModalCreateUser = () => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [image, setImage] = useState("");
+  const [role, setRole] = useState("USER");
+  const [preview, setPreview] = useState("");
 
+  const handleUpload = (event) => {
+    if (event.target && event.target.files && event.target.files[0]) {
+      setPreview(URL.createObjectURL(event.target.files[0]));
+      setImage(event.target.files[0]);
+    }
+  };
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
@@ -29,23 +41,38 @@ const ModalCreateUser = () => {
           <form className="row g-3">
             <div className="col-md-6">
               <label className="form-label">Email</label>
-              <input type="email" className="form-control" />
+              <input
+                type="email"
+                className="form-control"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+              />
             </div>
             <div className="col-md-6">
               <label className="form-label">Password</label>
-              <input type="password" className="form-control" />
+              <input
+                type="password"
+                className="form-control"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+              />
             </div>
             <div className="col-12">
               <label className="form-label">User name</label>
-              <input type="text" className="form-control" />
+              <input
+                type="text"
+                className="form-control"
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+              />
             </div>
             <div className="col-md-4">
               <label className="form-label">Role</label>
-              <select className="form-select">
-                <option selected>Choose...</option>
-                <option selected value="USER">
-                  User
-                </option>
+              <select
+                className="form-select"
+                onChange={(event) => setRole(event.target.value)}
+              >
+                <option value="USER">User</option>
                 <option value="ADMIN">Admin</option>
                 <option selected value="TEACHER">
                   Teacher
@@ -59,16 +86,19 @@ const ModalCreateUser = () => {
               </div>
               <div className="col-md-12">
                 <label className="form-label">
-                  <Button variant="primary">
+                  <span class="btn btn-primary btn-file">
                     <FcPlus size={"2em"} />
-                    Choose image
-                  </Button>
-                  <input type="file" hidden></input>
+                    Choose image{" "}
+                    <input
+                      type="file"
+                      hidden
+                      onChange={(event) => handleUpload(event)}
+                    />
+                  </span>
                 </label>
               </div>
               <div className="col-md-12 image-preview">
-                {/* <span>preview</span> */}
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0mo1-1RPPCSd54lH3fcOeOWM1wRHxEZ3C1A&s" />
+                {preview ? <img src={preview} /> : <span>preview</span>}
               </div>
             </div>
           </form>
