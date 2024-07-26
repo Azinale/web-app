@@ -1,19 +1,30 @@
+import axios from "axios";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FcPlus } from "react-icons/fc";
+import { postCreateUser, postCreateStudent, postCreateCourse } from "../../../services/adminService"
+import { toast } from "react-toastify";
 
 const ModalCreateUser = () => {
+  const [firstName, setfirstName] = useState("");
+  const [lastName, setlastName] = useState("");
   const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [image, setImage] = useState("");
   const [role, setRole] = useState("USER");
   const [preview, setPreview] = useState("");
+  const [title, setTitle] = useState("");
+  const [courseId, setCourseId] = useState("")
+  const [courseName, setCourseName] = useState("")
+  const [teacherId, setTeacherID] = useState("")
+
+
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const handleUpload = (event) => {
     if (event.target && event.target.files && event.target.files[0]) {
@@ -21,6 +32,20 @@ const ModalCreateUser = () => {
       setImage(event.target.files[0]);
     }
   };
+
+  const handleSave = async () => {
+    let data;
+    if (role === "TEACHER") {
+      await postCreateUser(firstName, lastName, email)
+    } else if (role === "COURSE") {
+      await postCreateCourse(courseName, title, teacherId, firstName, lastName, email)
+    }
+    else {
+      await postCreateStudent(firstName, lastName, courseId, courseName, title)
+    }
+    setShow(false);
+  };
+
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
@@ -39,44 +64,141 @@ const ModalCreateUser = () => {
         </Modal.Header>
         <Modal.Body>
           <form className="row g-3">
-            <div className="col-md-6">
-              <label className="form-label">Email</label>
+            {role === "COURSE" ? (
+              <>
+                <div className="col-6">
+                  <label className="form-label">Course name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={courseName}
+                    onChange={(event) => setCourseName(event.target.value)}
+                  />
+                </div>
+
+                <div className="col-md-6">
+                  <label className="form-label">title</label>
+                  <input
+                    type="name"
+                    className="form-control"
+                    value={title}
+                    onChange={(event) => setTitle(event.target.value)}
+                  />
+                </div>
+                <div className="col-3">
+                  <label className="form-label">Teacher ID</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    value={teacherId}
+                    onChange={(event) => setTeacherID(event.target.value)}
+                  />
+                </div>
+                <div className="col-6">
+                  <label className="form-label">Teacher first name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={firstName}
+                    onChange={(event) => setfirstName(event.target.value)}
+                  />
+                </div>
+                <div className="col-6">
+                  <label className="form-label">teacher last name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={lastName}
+                    onChange={(event) => setlastName(event.target.value)}
+                  />
+                </div>
+                <div className="col-6">
+                  <label className="form-label">teacher email</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                  />
+                </div>
+              </>
+            ) : (<><div className="col-md-6">
+              <label className="form-label">First name</label>
               <input
-                type="email"
+                type="name"
                 className="form-control"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
+                value={firstName}
+                onChange={(event) => setfirstName(event.target.value)}
               />
             </div>
-            <div className="col-md-6">
-              <label className="form-label">Password</label>
-              <input
-                type="password"
-                className="form-control"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-              />
-            </div>
-            <div className="col-12">
-              <label className="form-label">User name</label>
-              <input
-                type="text"
-                className="form-control"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-              />
-            </div>
+              <div className="col-md-6">
+                <label className="form-label">Last name</label>
+                <input
+                  type="name"
+                  className="form-control"
+                  value={lastName}
+                  onChange={(event) => setlastName(event.target.value)}
+                />
+              </div>
+              {role === "TEACHER" ? (
+                <div className="col-md-12">
+                  <label className="form-label">Email</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                  />
+                </div>
+              )
+
+
+
+                : (
+                  <>
+                    <div className="col-6">
+                      <label className="form-label">Course ID</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={courseId}
+                        onChange={(event) => setCourseId(event.target.value)}
+                      />
+                    </div>
+                    <div className="col-6">
+                      <label className="form-label">Course name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={courseName}
+                        onChange={(event) => setCourseName(event.target.value)}
+                      />
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label">title</label>
+                      <input
+                        type="name"
+                        className="form-control"
+                        value={title}
+                        onChange={(event) => setTitle(event.target.value)}
+                      />
+                    </div>
+                  </>
+
+                )}</>)}
+
+
             <div className="col-md-4">
               <label className="form-label">Role</label>
               <select
                 className="form-select"
+                value={role}
                 onChange={(event) => setRole(event.target.value)}
               >
                 <option value="USER">User</option>
-                <option value="ADMIN">Admin</option>
-                <option selected value="TEACHER">
-                  Teacher
-                </option>
+                <option value="COURSE">Course</option>
+                <option value="TEACHER">Teacher</option>
               </select>
             </div>
             <div className="col-12">
@@ -86,7 +208,7 @@ const ModalCreateUser = () => {
               </div>
               <div className="col-md-12">
                 <label className="form-label">
-                  <span class="btn btn-primary btn-file">
+                  <span className="btn btn-primary btn-file">
                     <FcPlus size={"2em"} />
                     Choose image{" "}
                     <input
@@ -98,7 +220,7 @@ const ModalCreateUser = () => {
                 </label>
               </div>
               <div className="col-md-12 image-preview">
-                {preview ? <img src={preview} /> : <span>preview</span>}
+                {preview ? <img src={preview} alt="preview" /> : <span>preview</span>}
               </div>
             </div>
           </form>
@@ -107,7 +229,7 @@ const ModalCreateUser = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleSave}>
             Save
           </Button>
         </Modal.Footer>
@@ -115,4 +237,5 @@ const ModalCreateUser = () => {
     </>
   );
 };
+
 export default ModalCreateUser;

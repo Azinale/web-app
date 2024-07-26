@@ -19,7 +19,7 @@ import ListUser from "../components/User/ListUser";
 import DetailUser from "../components/User/DetailUser";
 import Header from "../components/common/Header";
 import Admin from "../components/Admin/Admin";
-import Coursemanage from "../components/Admin/Coursemanage";
+import Coursemanage from "../components/Admin/content/Coursemanage";
 import DashBoard from "../components/Admin/content/DashBoard";
 import UserManage from "../components/Admin/content/UserManage";
 

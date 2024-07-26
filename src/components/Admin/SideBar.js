@@ -45,7 +45,7 @@ const SideBar = (props) => {
             }}
           >
             <PiChalkboardTeacherFill size={"4em"} />
-            Course manage
+            Management tool
           </div>
         </SidebarHeader>
 
@@ -53,9 +53,9 @@ const SideBar = (props) => {
           <Menu iconShape="circle">
             <MenuItem
               icon={<FaTachometerAlt />}
-              suffix={<span className="badge red">New</span>}
+              suffix={<span className="badge red">*</span>}
             >
-              All Course
+              Info
               <Link to="usermanage" />
             </MenuItem>
             <MenuItem icon={<FaGem />}>

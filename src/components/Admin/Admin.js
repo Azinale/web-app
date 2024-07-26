@@ -3,6 +3,7 @@ import "../../styles/Admin.scss";
 import { useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 const Admin = (props) => {
   const [collapsed, setCollapsed] = useState(false);
 
@@ -17,6 +18,13 @@ const Admin = (props) => {
         </div>
         <div className="admin-main">
           <Outlet />
+          <ToastContainer>
+            position="top-right" autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick rtl={false}
+            pauseOnFocusLoss draggable pauseOnHover theme="light" transition: Bounce
+          </ToastContainer>
         </div>
       </div>
     </div>

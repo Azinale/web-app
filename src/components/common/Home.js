@@ -4,7 +4,7 @@ import logo from "../../assets/image/cong-nghe-xu-ly-du-lieu-hinh-anh-y-te.jpg";
 import { connect } from "react-redux";
 import { type } from "@testing-library/user-event/dist/type";
 import "../../styles/global.scss";
-import video from "/home/quy/Documents/testJS/my-app/src/assets/video/hero.webm";
+import video from "../../assets/video/hero.webm";
 import Button from "react-bootstrap/Button";
 import { toast } from "react-toastify";
 
