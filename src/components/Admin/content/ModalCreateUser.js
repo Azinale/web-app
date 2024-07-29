@@ -6,7 +6,7 @@ import { FcPlus } from "react-icons/fc";
 import { postCreateUser, postCreateStudent, postCreateCourse } from "../../../services/adminService"
 import { toast } from "react-toastify";
 
-const ModalCreateUser = () => {
+const ModalCreateUser = (props) => {
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
   const [show, setShow] = useState(false);
@@ -23,7 +23,17 @@ const ModalCreateUser = () => {
 
 
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false)
+    setEmail("");
+    setCourseId("");
+    setCourseName("")
+    setfirstName("");
+    setlastName("")
+    setTitle("")
+    setTeacherID("")
+
+  };
   const handleShow = () => setShow(true);
 
   const handleUpload = (event) => {
@@ -37,6 +47,7 @@ const ModalCreateUser = () => {
     let data;
     if (role === "TEACHER") {
       await postCreateUser(firstName, lastName, email)
+
     } else if (role === "COURSE") {
       await postCreateCourse(courseName, title, teacherId, firstName, lastName, email)
     }
@@ -60,7 +71,7 @@ const ModalCreateUser = () => {
         className="modal-add-user"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add a new user</Modal.Title>
+          <Modal.Title>Update a user</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="row g-3">

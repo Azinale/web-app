@@ -34,6 +34,8 @@ const Header = () => {
               <Button variant="outline-success">Search</Button>
               <> </>
             </Form>
+            <Button variant="outline-success">Login</Button>
+
 
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">

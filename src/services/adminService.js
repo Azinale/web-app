@@ -14,6 +14,7 @@ const postCreateUser = (firstName, lastName, email) => {
         lastName: lastName,
         email: email,
     }
+    // console.log(data)
     if (validateEmail(email)) {
         return axios.post('http://localhost:8080/api/teacher/?callerId=4444', data)
 
@@ -23,6 +24,23 @@ const postCreateUser = (firstName, lastName, email) => {
 }
 export { postCreateUser }
 
+
+
+const postCreateAcc = (firstName, lastName, email) => {
+    let data = {
+        user: firstName,
+        lastName: lastName,
+        email: email,
+    }
+    // console.log(data)
+    if (validateEmail(email)) {
+        return axios.post('http://localhost:8081/api/v1/participant', data)
+
+    } else {
+        toast.error("Email is not valid")
+    }
+}
+export { postCreateAcc }
 
 const postCreateStudent = (firstNamei, lastNamei, courseId, courseNamei, titlei) => {
     let r = getCourse(courseId);
@@ -86,3 +104,8 @@ const postCreateCourse = (courseName, title, teacherId, firstNamet, lastNamet, e
 
 export { postCreateCourse }
 
+const getAllUser = () => {
+    return axios.get('http://localhost:8081/api/v1/participant/all')
+}
+
+export { getAllUser }

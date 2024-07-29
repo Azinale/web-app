@@ -8,7 +8,7 @@ import {
   SidebarFooter,
   SidebarContent,
 } from "react-pro-sidebar";
-
+import { FiHome } from "react-icons/fi";
 import {
   FaTachometerAlt,
   FaGem,
@@ -61,6 +61,13 @@ const SideBar = (props) => {
             <MenuItem icon={<FaGem />}>
               {" "}
               Author <Link to="dashboard" />
+            </MenuItem>
+            <MenuItem
+              icon={<FiHome />}
+              suffix={<span className="badge red">*</span>}
+            >
+              Back to Home
+              <Link to="/" />
             </MenuItem>
           </Menu>
           <Menu iconShape="circle">
