@@ -15,6 +15,7 @@ import DashBoard from "./components/Admin/content/DashBoard";
 import UserManage from "./components/Admin/content/UserManage";
 import Coursemanage from "./components/Admin/content/Coursemanage";
 import Home from "./components/common/Home";
+import Login from "./components/auth/Login";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const reduxStore = createStore(
   rootReducer,
@@ -30,12 +31,15 @@ root.render(
           <Route path="user/:id" element={<DetailUser />} />
           <Route path="user" element={<ListUser />} />
           <Route path="course" element={<Coursemanage />} />
+
         </Route>
 
         <Route path="/Admin" element={<Admin />}>
           <Route path="dashboard" element={<DashBoard />} />
           <Route path="usermanage" element={<UserManage />} />
         </Route>
+        <Route path="/login" element={<Login />} />
+
       </Routes>
     </Provider>
     {/* </React.StrictMode> */}

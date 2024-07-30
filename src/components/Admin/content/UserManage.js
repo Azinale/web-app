@@ -9,13 +9,12 @@ import ModalUpdate from "./ModalUpdate";
 
 const UserManage = (props) => {
   const [listUser, setListUser] = useState()
-
   useEffect(() => {
-    fetchList()
+    // fetchList()
   }, [])
 
-  const fetchList = async () => {
-    let response = await axios.get(`http://localhost:8080/api/teacher/list?firstRow=0&maxResults=100&orderColumn=id&orderAsc=true`);
+  const fetchList = async (page, limit) => {
+    let response = await axios.get(`http://localhost:8080/api/teacher/list?firstRow=${page}&maxResults=${limit}&orderColumn=id&orderAsc=true`);
     setListUser(response.data.body)
 
   }
@@ -25,7 +24,7 @@ const UserManage = (props) => {
         <ModalCreateUser fetchList={fetchList} />
       </div>
       <div className="title">
-        <ShowStudent listUser={listUser} />
+        <TableUser />
       </div>
     </div>
   );

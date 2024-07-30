@@ -3,7 +3,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FcPlus } from "react-icons/fc";
-import { postCreateUser, postCreateStudent, postCreateCourse } from "../../../services/adminService"
+import { postCreateUser, postCreateStudent, postCreateCourse, postUpdate } from "../../../services/adminService"
 import { toast } from "react-toastify";
 
 const ModalUpdate = (props) => {
@@ -22,6 +22,7 @@ const ModalUpdate = (props) => {
     const [teacherId, setTeacherID] = useState("")
     const [updateUser, setUpdateUser] = useState({})
 
+    const data = props.props
     const handleClose = () => {
         setShow(false)
         setEmail("");
@@ -46,18 +47,10 @@ const ModalUpdate = (props) => {
         }
     };
 
-    const handleSave = async () => {
-        let data;
-        if (role === "TEACHER") {
-            await postCreateUser(firstName, lastName, email)
 
-        } else if (role === "COURSE") {
-            await postCreateCourse(courseName, title, teacherId, firstName, lastName, email)
-        }
-        else {
-            await postCreateStudent(firstName, lastName, courseId, courseName, title)
-        }
-        setShow(false);
+    const handleSave = async () => {
+        await postUpdate(data.id, username, data.role, image);
+        handleClose()
     };
 
     return (
@@ -89,9 +82,8 @@ const ModalUpdate = (props) => {
                                         onChange={(event) => setCourseName(event.target.value)}
                                     />
                                 </div>
-
                                 <div className="col-md-6">
-                                    <label className="form-label">title</label>
+                                    <label className="form-label">Title</label>
                                     <input
                                         type="name"
                                         className="form-control"
@@ -118,7 +110,7 @@ const ModalUpdate = (props) => {
                                     />
                                 </div>
                                 <div className="col-6">
-                                    <label className="form-label">teacher last name</label>
+                                    <label className="form-label">Teacher last name</label>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -127,7 +119,7 @@ const ModalUpdate = (props) => {
                                     />
                                 </div>
                                 <div className="col-6">
-                                    <label className="form-label">teacher email</label>
+                                    <label className="form-label">Teacher email</label>
                                     <input
                                         type="email"
                                         className="form-control"
@@ -136,39 +128,70 @@ const ModalUpdate = (props) => {
                                     />
                                 </div>
                             </>
-                        ) : (<><div className="col-md-6">
-                            <label className="form-label">First name</label>
-                            <input
-                                type="name"
-                                className="form-control"
-                                value={firstName}
-                                onChange={(event) => setfirstName(event.target.value)}
-                            />
-                        </div>
-                            <div className="col-md-6">
-                                <label className="form-label">Last name</label>
-                                <input
-                                    type="name"
-                                    className="form-control"
-                                    value={lastName}
-                                    onChange={(event) => setlastName(event.target.value)}
-                                />
-                            </div>
-                            {role === "TEACHER" ? (
-                                <div className="col-md-12">
+                        ) : role === "ANOTHER" || role === "USER" || role === "ADMIN" ? (
+                            <>
+                                <div className="col-6">
+                                    <label className="form-label">Username</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={username}
+                                        onChange={(event) => setUsername(event.target.value)}
+                                        placeholder={data.username}
+                                    />
+                                </div>
+                                <div className="col-6">
                                     <label className="form-label">Email</label>
                                     <input
                                         type="email"
                                         className="form-control"
                                         value={email}
-                                        onChange={(event) => setEmail(event.target.value)}
+                                        // onChange={(event) => setEmail(event.target.value)}
+                                        placeholder={data.email}
                                     />
                                 </div>
-                            )
-
-
-
-                                : (
+                                <div className="col-6">
+                                    <label className="form-label">Password</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        value={password}
+                                        // onChange={(event) => setPassword(event.target.value)}
+                                        placeholder='_____________________________________'
+                                    />
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div className="col-md-6">
+                                    <label className="form-label">First name</label>
+                                    <input
+                                        type="name"
+                                        className="form-control"
+                                        value={firstName}
+                                        onChange={(event) => setfirstName(event.target.value)}
+                                    />
+                                </div>
+                                <div className="col-md-6">
+                                    <label className="form-label">Last name</label>
+                                    <input
+                                        type="name"
+                                        className="form-control"
+                                        value={lastName}
+                                        onChange={(event) => setlastName(event.target.value)}
+                                    />
+                                </div>
+                                {role === "TEACHER" ? (
+                                    <div className="col-md-12">
+                                        <label className="form-label">Email</label>
+                                        <input
+                                            type="email"
+                                            className="form-control"
+                                            value={email}
+                                            onChange={(event) => setEmail(event.target.value)}
+                                        />
+                                    </div>
+                                ) : (
                                     <>
                                         <div className="col-6">
                                             <label className="form-label">Course ID</label>
@@ -188,9 +211,8 @@ const ModalUpdate = (props) => {
                                                 onChange={(event) => setCourseName(event.target.value)}
                                             />
                                         </div>
-
                                         <div className="col-md-6">
-                                            <label className="form-label">title</label>
+                                            <label className="form-label">Title</label>
                                             <input
                                                 type="name"
                                                 className="form-control"
@@ -199,20 +221,22 @@ const ModalUpdate = (props) => {
                                             />
                                         </div>
                                     </>
-
-                                )}</>)}
+                                )}
+                            </>
+                        )}
 
 
                         <div className="col-md-4">
                             <label className="form-label">Role</label>
                             <select
                                 className="form-select"
-                                value={role}
+                                value={data.role}
                                 onChange={(event) => setRole(event.target.value)}
                             >
-                                <option value="USER">User</option>
+                                <option value={data.role}>{data.role}</option>
+                                {/* <option value="USER">User</option>
                                 <option value="COURSE">Course</option>
-                                <option value="TEACHER">Teacher</option>
+                                <option value="TEACHER">Teacher</option> */}
                             </select>
                         </div>
                         <div className="col-12">

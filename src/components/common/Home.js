@@ -22,7 +22,7 @@ const Home = (props) => {
   return (
     <>
       <div className="Homepage">
-        <video autoPlay muted loop class="w-full">
+        <video autoPlay muted loop className="w-full">
           <source src={video} type="video/mp4" />
         </video>
         <div className="home-content">

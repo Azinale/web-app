@@ -3,7 +3,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FcPlus } from "react-icons/fc";
-import { postCreateUser, postCreateStudent, postCreateCourse } from "../../../services/adminService"
+import { postCreateUser, postCreateStudent, postCreateCourse, postCreateUser2 } from "../../../services/adminService"
 import { toast } from "react-toastify";
 
 const ModalCreateUser = (props) => {
@@ -48,7 +48,10 @@ const ModalCreateUser = (props) => {
     if (role === "TEACHER") {
       await postCreateUser(firstName, lastName, email)
 
-    } else if (role === "COURSE") {
+    } else if (role === "ANOTHER") {
+      await postCreateUser2(username, password, email, role)
+    }
+    else if (role === "COURSE") {
       await postCreateCourse(courseName, title, teacherId, firstName, lastName, email)
     }
     else {
@@ -71,7 +74,7 @@ const ModalCreateUser = (props) => {
         className="modal-add-user"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Update a user</Modal.Title>
+          <Modal.Title>create a user</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="row g-3">
@@ -86,9 +89,8 @@ const ModalCreateUser = (props) => {
                     onChange={(event) => setCourseName(event.target.value)}
                   />
                 </div>
-
                 <div className="col-md-6">
-                  <label className="form-label">title</label>
+                  <label className="form-label">Title</label>
                   <input
                     type="name"
                     className="form-control"
@@ -115,7 +117,7 @@ const ModalCreateUser = (props) => {
                   />
                 </div>
                 <div className="col-6">
-                  <label className="form-label">teacher last name</label>
+                  <label className="form-label">Teacher last name</label>
                   <input
                     type="text"
                     className="form-control"
@@ -124,7 +126,7 @@ const ModalCreateUser = (props) => {
                   />
                 </div>
                 <div className="col-6">
-                  <label className="form-label">teacher email</label>
+                  <label className="form-label">Teacher email</label>
                   <input
                     type="email"
                     className="form-control"
@@ -133,26 +135,18 @@ const ModalCreateUser = (props) => {
                   />
                 </div>
               </>
-            ) : (<><div className="col-md-6">
-              <label className="form-label">First name</label>
-              <input
-                type="name"
-                className="form-control"
-                value={firstName}
-                onChange={(event) => setfirstName(event.target.value)}
-              />
-            </div>
-              <div className="col-md-6">
-                <label className="form-label">Last name</label>
-                <input
-                  type="name"
-                  className="form-control"
-                  value={lastName}
-                  onChange={(event) => setlastName(event.target.value)}
-                />
-              </div>
-              {role === "TEACHER" ? (
-                <div className="col-md-12">
+            ) : role === "ANOTHER" ? (
+              <>
+                <div className="col-6">
+                  <label className="form-label">Username</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={username}
+                    onChange={(event) => setUsername(event.target.value)}
+                  />
+                </div>
+                <div className="col-6">
                   <label className="form-label">Email</label>
                   <input
                     type="email"
@@ -161,11 +155,47 @@ const ModalCreateUser = (props) => {
                     onChange={(event) => setEmail(event.target.value)}
                   />
                 </div>
-              )
-
-
-
-                : (
+                <div className="col-6">
+                  <label className="form-label">Password</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="col-md-6">
+                  <label className="form-label">First name</label>
+                  <input
+                    type="name"
+                    className="form-control"
+                    value={firstName}
+                    onChange={(event) => setfirstName(event.target.value)}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Last name</label>
+                  <input
+                    type="name"
+                    className="form-control"
+                    value={lastName}
+                    onChange={(event) => setlastName(event.target.value)}
+                  />
+                </div>
+                {role === "TEACHER" ? (
+                  <div className="col-md-12">
+                    <label className="form-label">Email</label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
+                    />
+                  </div>
+                ) : (
                   <>
                     <div className="col-6">
                       <label className="form-label">Course ID</label>
@@ -185,9 +215,8 @@ const ModalCreateUser = (props) => {
                         onChange={(event) => setCourseName(event.target.value)}
                       />
                     </div>
-
                     <div className="col-md-6">
-                      <label className="form-label">title</label>
+                      <label className="form-label">Title</label>
                       <input
                         type="name"
                         className="form-control"
@@ -196,8 +225,9 @@ const ModalCreateUser = (props) => {
                       />
                     </div>
                   </>
-
-                )}</>)}
+                )}
+              </>
+            )}
 
 
             <div className="col-md-4">
@@ -210,6 +240,7 @@ const ModalCreateUser = (props) => {
                 <option value="USER">User</option>
                 <option value="COURSE">Course</option>
                 <option value="TEACHER">Teacher</option>
+                <option value="ANOTHER">another one</option>
               </select>
             </div>
             <div className="col-12">

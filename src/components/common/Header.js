@@ -5,7 +5,12 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Dropdown from "react-bootstrap/Dropdown";
 import "../../styles/global.scss";
+import { useNavigate } from "react-router-dom";
 const Header = () => {
+  const navigate = useNavigate();
+  const handleLogin = () => {
+    navigate("/login")
+  }
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
@@ -34,7 +39,7 @@ const Header = () => {
               <Button variant="outline-success">Search</Button>
               <> </>
             </Form>
-            <Button variant="outline-success">Login</Button>
+            <Button variant="outline-success" onClick={() => handleLogin()}>Login</Button>
 
 
             <Dropdown>

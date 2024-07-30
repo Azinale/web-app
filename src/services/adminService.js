@@ -1,6 +1,7 @@
 import axios from "axios"
 import { getCourse, getTeacher } from "../utils/getData"
 import { toast, ToastContainer } from "react-toastify"
+import { Form, resolvePath } from "react-router-dom";
 const validateEmail = (email) => {
     return String(email)
         .toLowerCase()
@@ -109,3 +110,44 @@ const getAllUser = () => {
 }
 
 export { getAllUser }
+
+
+
+
+
+const postCreateUser2 = (username, password, email, role) => {
+    let data = {
+        username: username,
+        password: password,
+        email: email,
+        role: role,
+    }
+    // console.log(data)
+    if (validateEmail(email)) {
+        return axios.post('http://localhost:8081/api/v1/participant', data)
+
+    } else {
+        toast.error("Email is not valid")
+    }
+}
+export { postCreateUser2 }
+
+const postDeleteUser = (id) => {
+    return axios.delete(`http://localhost:8081/api/v1/participant`, { data: { id: id } })
+}
+export { postDeleteUser }
+
+
+const postUpdate = (id, username, role, image) => {
+    const data = new FormData()
+    data.append('id', id)
+
+    data.append('username', username)
+    data.append("role", role)
+    data.append('userImage', image)
+
+    // console.log(data)
+    return axios.put(`http://localhost:8081/api/v1/participant`, data)
+}
+export { postUpdate }
+
