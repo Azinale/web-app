@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
-import "/home/quy/Documents/testJS/my-app/src/styles/listUser.scss";
+import "../../styles/listUser.scss";
+import { toast } from "react-toastify";
 
 const ListUser = () => {
     const [listUser, setListUser] = useState([]);
