@@ -2,6 +2,10 @@ import axios from "axios"
 import { getCourse, getTeacher } from "../utils/getData"
 import { toast, ToastContainer } from "react-toastify"
 import { Form, resolvePath } from "react-router-dom";
+
+let token = localStorage.token
+console.log(token)
+
 const validateEmail = (email) => {
     return String(email)
         .toLowerCase()
@@ -17,14 +21,17 @@ const postCreateUser = (firstName, lastName, email) => {
     }
     // console.log(data)
     if (validateEmail(email)) {
-        return axios.post('http://localhost:8080/api/teacher/?callerId=4444', data)
+        return axios.post('http://localhost:8080/api/teacher/?callerId=4444', data, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
 
     } else {
         toast.error("Email is not valid")
     }
 }
 export { postCreateUser }
-
 
 
 const postCreateAcc = (firstName, lastName, email) => {
@@ -35,7 +42,7 @@ const postCreateAcc = (firstName, lastName, email) => {
     }
     // console.log(data)
     if (validateEmail(email)) {
-        return axios.post('http://localhost:8081/api/v1/participant', data)
+        return axios.post('http://localhost:8081/api/v1/participant', data,)
 
     } else {
         toast.error("Email is not valid")
@@ -60,7 +67,11 @@ const postCreateStudent = (firstNamei, lastNamei, courseId, courseNamei, titlei)
         const { id, courseName, title } = course;
         if (id.toString() === courseId && courseName === courseNamei && title === titlei) {
             toast.success("CREATED");
-            return axios.post('http://localhost:8080/api/student/?callerId=4444', info);
+            return axios.post('http://localhost:8080/api/student/?callerId=4444', info, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
         } else {
             toast.error("COURSE NOT FOUND");
             throw new Error("Course not found");
@@ -93,7 +104,11 @@ const postCreateCourse = (courseName, title, teacherId, firstNamet, lastNamet, e
 
         if (id.toString() === teacherId && firstName === firstNamet && lastName === lastNamet && emailt === email) {
             toast.success("CREATED");
-            return axios.post('http://localhost:8080/api/course/?callerId=4444', infoCourse);
+            return axios.post('http://localhost:8080/api/course/?callerId=4444', infoCourse, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
         } else {
             toast.error("TEACHER NOT FOUND");
             throw new Error("Teacher not found");
@@ -105,11 +120,24 @@ const postCreateCourse = (courseName, title, teacherId, firstNamet, lastNamet, e
 
 export { postCreateCourse }
 
+const getAllTeacher = () => {
+    return axios.get('http://localhost:8080/api/teacher/list?firstRow=0&maxResults=10&orderColumn=id&orderAsc=true', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+}
+
+export { getAllTeacher }
+
+
 const getAllUser = () => {
     return axios.get('http://localhost:8081/api/v1/participant/all')
 }
 
 export { getAllUser }
+
+
 
 
 
@@ -137,6 +165,14 @@ const postDeleteUser = (id) => {
 }
 export { postDeleteUser }
 
+const postDeleteTeacher = (id) => {
+    return axios.delete(`http://localhost:8080/api/teacher/?teacherId=${id}&callerId=4444`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+}
+export { postDeleteTeacher }
 
 const postUpdate = (id, username, role, image) => {
     const data = new FormData()
@@ -151,3 +187,18 @@ const postUpdate = (id, username, role, image) => {
 }
 export { postUpdate }
 
+const postUpdateTeacher = (id, firstName, lastName, email) => {
+    let data = {
+        id: id,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+    }
+    // console.log(data)
+    return axios.put(`http://localhost:8080/api/teacher/?callerId=4444`, data, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+}
+export { postUpdateTeacher }

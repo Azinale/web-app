@@ -16,15 +16,22 @@ const Login = (props) => {
 
 
     const handleLogin = async () => {
-        let response = await LoginAPI(email, password)
-        toast(response.data.EM)
-
-        if (response.status === 200 && response.data.EM !== "Incorrect password") {
-            // dispatch({ type: "LOGIN_SUCCESS", payload: response })
-            toast.success("Login Successful")
-        } else {
-            toast.error("somthing wrong with code: ", response.request.status)
+        try {
+            let response = await LoginAPI(email, password)
+            // console.log(response.data.accessToken)
+            if (response && response.data.accessToken) {
+                toast.success("Log in");
+                localStorage.setItem("token", response.data.accessToken)
+                console.log(localStorage.token)
+                setTimeout(() => {
+                    navigate("/")
+                }, 1000);
+            }
+        } catch (error) {
+            toast.error("Check User Name or Password again")
         }
+
+
     }
     return (
         <div className="login-container">

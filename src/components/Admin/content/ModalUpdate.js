@@ -3,7 +3,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FcPlus } from "react-icons/fc";
-import { postCreateUser, postCreateStudent, postCreateCourse, postUpdate } from "../../../services/adminService"
+import { postCreateUser, postCreateStudent, postCreateCourse, postUpdate, postUpdateTeacher } from "../../../services/adminService"
 import { toast } from "react-toastify";
 
 const ModalUpdate = (props) => {
@@ -34,10 +34,12 @@ const ModalUpdate = (props) => {
         setTeacherID("")
 
     };
+
     const handleShow = (user) => {
+        console.log(data.role)
         setShow(true)
         setUpdateUser(user)
-        console.log(user)
+
     };
 
     const handleUpload = (event) => {
@@ -49,7 +51,8 @@ const ModalUpdate = (props) => {
 
 
     const handleSave = async () => {
-        await postUpdate(data.id, username, data.role, image);
+        await postUpdateTeacher(data.id, data.firstName, data.lastName, data.email);
+        props.onUpdate();
         handleClose()
     };
 

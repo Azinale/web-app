@@ -21,7 +21,6 @@ const UserManage = (props) => {
   return (
     <div className="manage-user-container">
       <div className="user-content">
-        <ModalCreateUser fetchList={fetchList} />
       </div>
       <div className="title">
         <TableUser />

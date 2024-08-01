@@ -6,7 +6,7 @@ import { FcPlus } from "react-icons/fc";
 import { postCreateUser, postCreateStudent, postCreateCourse, postCreateUser2 } from "../../../services/adminService"
 import { toast } from "react-toastify";
 
-const ModalCreateUser = (props) => {
+const ModalCreateUser = ({ onUserUpdated }) => {
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
   const [show, setShow] = useState(false);
@@ -57,6 +57,7 @@ const ModalCreateUser = (props) => {
     else {
       await postCreateStudent(firstName, lastName, courseId, courseName, title)
     }
+    onUserUpdated()
     setShow(false);
   };
 
