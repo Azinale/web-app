@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getAllTeacher } from "../../../services/adminService";
 import ModalDelete from "./ModalDelete";
 import ModalUpdateTeacher from "./ModalUpdateTeacher";
 import ModalCreateUser from "./ModalCreateUser";
 import ReactPaginate from "react-paginate";
+import Fathercomp from "./Test";
+import ParentComponent from "./ChildComponent";
+
 
 const TableUser = () => {
     const [listUser, setListUser] = useState([]);
@@ -15,13 +18,15 @@ const TableUser = () => {
         }
     };
 
-    useState(() => {
+
+
+    useEffect(() => {
         fetchList();
     }, []);
 
     return (
         <div>
-            <ModalCreateUser onUserUpdated={fetchList} />
+            <ModalCreateUser fetchList={fetchList} />
             <div>ALL USER</div>
             <table className="table table-hover table-bordered">
                 <thead>
@@ -42,8 +47,8 @@ const TableUser = () => {
                                 <td>{item.lastName}</td>
                                 <td>{item.email}</td>
                                 <td>
-                                    <ModalDelete user={item} onUserDeleted={fetchList} />
-                                    <ModalUpdateTeacher user={item} onUserUpdated={fetchList} />
+                                    <ModalDelete user={item} fetchList={fetchList} />
+                                    <ModalUpdateTeacher user={item} fetchList={fetchList} />
                                 </td>
                             </tr>
                         ))
@@ -54,6 +59,8 @@ const TableUser = () => {
                     )}
                 </tbody>
             </table>
+            <Fathercomp />
+            <ParentComponent />
             <ReactPaginate
                 nextLabel="next >"
                 onPageChange={() => { }} // Tạm thời bỏ trống

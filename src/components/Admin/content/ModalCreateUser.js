@@ -1,64 +1,63 @@
-import axios from "axios";
-import { useState } from "react";
+import React, { useState, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FcPlus } from "react-icons/fc";
-import { postCreateUser, postCreateStudent, postCreateCourse, postCreateUser2 } from "../../../services/adminService"
+import { postCreateUser, postCreateStudent, postCreateCourse, postCreateUser2 } from "../../../services/adminService";
 import { toast } from "react-toastify";
 
-const ModalCreateUser = ({ onUserUpdated }) => {
-  const [firstName, setfirstName] = useState("");
-  const [lastName, setlastName] = useState("");
+const ModalCreateUser = ({ fetchList }) => {
   const [show, setShow] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [image, setImage] = useState("");
-  const [role, setRole] = useState("USER");
   const [preview, setPreview] = useState("");
-  const [title, setTitle] = useState("");
-  const [courseId, setCourseId] = useState("")
-  const [courseName, setCourseName] = useState("")
-  const [teacherId, setTeacherID] = useState("")
+  const [role, setRole] = useState("USER");
 
-
+  const formRef = useRef(null);
+  const imageRef = useRef(null);
 
   const handleClose = () => {
-    setShow(false)
-    setEmail("");
-    setCourseId("");
-    setCourseName("")
-    setfirstName("");
-    setlastName("")
-    setTitle("")
-    setTeacherID("")
-
+    setShow(false);
+    setPreview("");
+    setRole("USER");
   };
+
   const handleShow = () => setShow(true);
 
   const handleUpload = (event) => {
     if (event.target && event.target.files && event.target.files[0]) {
       setPreview(URL.createObjectURL(event.target.files[0]));
-      setImage(event.target.files[0]);
+      imageRef.current = event.target.files[0];
     }
   };
 
   const handleSave = async () => {
-    let data;
-    if (role === "TEACHER") {
-      await postCreateUser(firstName, lastName, email)
+    if (formRef.current) {
+      const form = new FormData(formRef.current);
+      let firstName = form.get("firstName");
+      let lastName = form.get("lastName");
+      let email = form.get("email");
+      let username = form.get("username");
+      let password = form.get("password");
+      let courseName = form.get("courseName");
+      let courseId = form.get("courseId");
+      let title = form.get("title");
+      let teacherId = form.get("teacherId");
 
-    } else if (role === "ANOTHER") {
-      await postCreateUser2(username, password, email, role)
+      try {
+        if (role === "TEACHER") {
+          await postCreateUser(firstName, lastName, email);
+        } else if (role === "ANOTHER") {
+          await postCreateUser2(username, password, email, role);
+        } else if (role === "COURSE") {
+          await postCreateCourse(courseName, title, teacherId, firstName, lastName, email);
+        } else {
+          await postCreateStudent(firstName, lastName, courseId, courseName, title);
+        }
+        fetchList();
+        toast.success("User created successfully");
+      } catch (error) {
+        toast.error("Error creating user");
+      }
+      handleClose();
     }
-    else if (role === "COURSE") {
-      await postCreateCourse(courseName, title, teacherId, firstName, lastName, email)
-    }
-    else {
-      await postCreateStudent(firstName, lastName, courseId, courseName, title)
-    }
-    onUserUpdated()
-    setShow(false);
   };
 
   return (
@@ -67,183 +66,108 @@ const ModalCreateUser = ({ onUserUpdated }) => {
         ADD USER
       </Button>
 
-      <Modal
-        show={show}
-        onHide={handleClose}
-        size="xl"
-        backdrop="static"
-        className="modal-add-user"
-      >
+      <Modal show={show} onHide={handleClose} size="xl" backdrop="static" className="modal-add-user">
         <Modal.Header closeButton>
-          <Modal.Title>create a user</Modal.Title>
+          <Modal.Title>Create a user</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form className="row g-3">
-            {role === "COURSE" ? (
-              <>
-                <div className="col-6">
-                  <label className="form-label">Course name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={courseName}
-                    onChange={(event) => setCourseName(event.target.value)}
-                  />
-                </div>
-                <div className="col-md-6">
-                  <label className="form-label">Title</label>
-                  <input
-                    type="name"
-                    className="form-control"
-                    value={title}
-                    onChange={(event) => setTitle(event.target.value)}
-                  />
-                </div>
-                <div className="col-3">
-                  <label className="form-label">Teacher ID</label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    value={teacherId}
-                    onChange={(event) => setTeacherID(event.target.value)}
-                  />
-                </div>
-                <div className="col-6">
-                  <label className="form-label">Teacher first name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={firstName}
-                    onChange={(event) => setfirstName(event.target.value)}
-                  />
-                </div>
-                <div className="col-6">
-                  <label className="form-label">Teacher last name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={lastName}
-                    onChange={(event) => setlastName(event.target.value)}
-                  />
-                </div>
-                <div className="col-6">
-                  <label className="form-label">Teacher email</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                  />
-                </div>
-              </>
-            ) : role === "ANOTHER" ? (
-              <>
-                <div className="col-6">
-                  <label className="form-label">Username</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={username}
-                    onChange={(event) => setUsername(event.target.value)}
-                  />
-                </div>
-                <div className="col-6">
-                  <label className="form-label">Email</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                  />
-                </div>
-                <div className="col-6">
-                  <label className="form-label">Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                  />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="col-md-6">
-                  <label className="form-label">First name</label>
-                  <input
-                    type="name"
-                    className="form-control"
-                    value={firstName}
-                    onChange={(event) => setfirstName(event.target.value)}
-                  />
-                </div>
-                <div className="col-md-6">
-                  <label className="form-label">Last name</label>
-                  <input
-                    type="name"
-                    className="form-control"
-                    value={lastName}
-                    onChange={(event) => setlastName(event.target.value)}
-                  />
-                </div>
-                {role === "TEACHER" ? (
-                  <div className="col-md-12">
-                    <label className="form-label">Email</label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      value={email}
-                      onChange={(event) => setEmail(event.target.value)}
-                    />
-                  </div>
-                ) : (
-                  <>
-                    <div className="col-6">
-                      <label className="form-label">Course ID</label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        value={courseId}
-                        onChange={(event) => setCourseId(event.target.value)}
-                      />
-                    </div>
-                    <div className="col-6">
-                      <label className="form-label">Course name</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={courseName}
-                        onChange={(event) => setCourseName(event.target.value)}
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label className="form-label">Title</label>
-                      <input
-                        type="name"
-                        className="form-control"
-                        value={title}
-                        onChange={(event) => setTitle(event.target.value)}
-                      />
-                    </div>
-                  </>
-                )}
-              </>
-            )}
-
-
+          <form ref={formRef} className="row g-3">
             <div className="col-md-4">
               <label className="form-label">Role</label>
               <select
                 className="form-select"
                 value={role}
                 onChange={(event) => setRole(event.target.value)}
+                name="role"
               >
                 <option value="USER">User</option>
                 <option value="COURSE">Course</option>
                 <option value="TEACHER">Teacher</option>
-                <option value="ANOTHER">another one</option>
+                <option value="ANOTHER">Another</option>
               </select>
             </div>
+
+            {role === "COURSE" && (
+              <>
+                <div className="col-6">
+                  <label className="form-label">Course Name</label>
+                  <input type="text" className="form-control" name="courseName" />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Title</label>
+                  <input type="text" className="form-control" name="title" />
+                </div>
+                <div className="col-3">
+                  <label className="form-label">Teacher ID</label>
+                  <input type="number" className="form-control" name="teacherId" />
+                </div>
+                <div className="col-6">
+                  <label className="form-label">Teacher First Name</label>
+                  <input type="text" className="form-control" name="firstName" />
+                </div>
+                <div className="col-6">
+                  <label className="form-label">Teacher Last Name</label>
+                  <input type="text" className="form-control" name="lastName" />
+                </div>
+                <div className="col-6">
+                  <label className="form-label">Teacher Email</label>
+                  <input type="email" className="form-control" name="email" />
+                </div>
+              </>
+            )}
+
+            {role === "ANOTHER" && (
+              <>
+                <div className="col-6">
+                  <label className="form-label">Username</label>
+                  <input type="text" className="form-control" name="username" />
+                </div>
+                <div className="col-6">
+                  <label className="form-label">Email</label>
+                  <input type="email" className="form-control" name="email" />
+                </div>
+                <div className="col-6">
+                  <label className="form-label">Password</label>
+                  <input type="password" className="form-control" name="password" />
+                </div>
+              </>
+            )}
+
+            {(role === "USER" || role === "TEACHER") && (
+              <>
+                <div className="col-md-6">
+                  <label className="form-label">First Name</label>
+                  <input type="text" className="form-control" name="firstName" />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Last Name</label>
+                  <input type="text" className="form-control" name="lastName" />
+                </div>
+                {role === "USER" && (
+                  <>
+                    <div className="col-6">
+                      <label className="form-label">Course ID</label>
+                      <input type="number" className="form-control" name="courseId" />
+                    </div>
+                    <div className="col-6">
+                      <label className="form-label">Course Name</label>
+                      <input type="text" className="form-control" name="courseName" />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Title</label>
+                      <input type="text" className="form-control" name="title" />
+                    </div>
+                  </>
+                )}
+                {role === "TEACHER" && (
+                  <div className="col-md-12">
+                    <label className="form-label">Email</label>
+                    <input type="email" className="form-control" name="email" />
+                  </div>
+                )}
+              </>
+            )}
+
             <div className="col-12">
               <div className="form-check">
                 <input className="form-check-input" type="checkbox" />
@@ -254,11 +178,7 @@ const ModalCreateUser = ({ onUserUpdated }) => {
                   <span className="btn btn-primary btn-file">
                     <FcPlus size={"2em"} />
                     Choose image{" "}
-                    <input
-                      type="file"
-                      hidden
-                      onChange={(event) => handleUpload(event)}
-                    />
+                    <input type="file" hidden onChange={handleUpload} />
                   </span>
                 </label>
               </div>

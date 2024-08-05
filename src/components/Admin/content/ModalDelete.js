@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import { postDeleteTeacher } from '../../../services/adminService';
 import { toast } from 'react-toastify';
 
-const ModalDelete = ({ user, onUserDeleted }) => {
+const ModalDelete = ({ user, fetchList }) => {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -14,7 +14,7 @@ const ModalDelete = ({ user, onUserDeleted }) => {
         let response = await postDeleteTeacher(user.id);
         if (response && response.status === 200) {
             toast.success("User deleted");
-            onUserDeleted(); // Gọi callback để cập nhật lại danh sách
+            fetchList(); // Gọi callback để cập nhật lại danh sách
             handleClose();
         } else {
             toast.error("Something went wrong");

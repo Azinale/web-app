@@ -6,7 +6,6 @@ import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 const Admin = (props) => {
   const [collapsed, setCollapsed] = useState(false);
-
   return (
     <div className="admin-container">
       <div className="admin-sidebar">

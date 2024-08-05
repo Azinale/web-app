@@ -24,7 +24,7 @@ const Header = () => {
           >
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/user">User</Nav.Link>
-            <Nav.Link href="/Admin">Admin</Nav.Link>
+            <Nav.Link href="/Admin/usermanage">Admin</Nav.Link>
             <Nav.Link href="/course">Course</Nav.Link>
           </Nav>
 
@@ -39,7 +39,7 @@ const Header = () => {
               <Button variant="outline-success">Search</Button>
               <> </>
             </Form>
-            <Button variant="outline-success" onClick={() => handleLogin()}>Login</Button>
+            <Button variant="outline-success mx-3" onClick={() => handleLogin()}>Login</Button>
 
 
             <Dropdown>
